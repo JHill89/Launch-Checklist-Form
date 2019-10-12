@@ -19,13 +19,28 @@
                     <label>Co-pilot Name <input type="text" name="copilotName"/></label>
                 </div>
                 <div style="display:flex; flex-direction: row; justify-content: center; align-items: center; margin: 8 0;">
-                    <label>Fuel Level (gal) <input type="text" name="fuelLevel"/></label> 
+                    <label>Fuel Level (gal) <input type="number" name="fuelLevel" min="0" max="10000"/></label> 
                 </div>
                 <div style="display:flex; flex-direction: row; justify-content: center; align-items: center; margin: 8 0;">
-                    <label>Cargo Weight (lbs) <input type="text" name="cargoWeight"/></label>
+                    <label>Cargo Weight (lbs) <input type="number" name="cargoWeight" min="0" max="10000"/></label>
                 </div>
                 <button id="formSubmit">Submit</button>
             </form>
+            <script>
+                window.addEventListener("load", function() {
+                    let form = document.querySelector("form");
+                    form.addEventListener("submit", function(event) {
+                        let pilotNameInput = document.querySelector("input[name=pilotName]");
+                        let copilotNameInput = document.querySelector("input[name=copilotName]");
+                        let fuelLevelInput = document.querySelector("input[name=fuelLevel]");
+                        let cargoWeightInput = document.querySelector("input[name=cargoWeight]");
+                        if (pilotNameInput.value === "" || copilotNameInput.value === "" || fuelLevelInput.value === "" || cargoWeightInput.value === "") {
+                            alert("All fields are required!");
+                            event.preventDefault();
+                        }
+                    });
+                });
+            </script>
         </div>
         <div id="launchStatusCheck">
             <h2 id="launchStatus">Awaiting Information Before Launch</h2>
