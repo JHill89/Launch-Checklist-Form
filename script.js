@@ -15,36 +15,45 @@
 window.addEventListener("load", function() {
    // console.log("Test");
    let form = document.querySelector("form");
+
    // variables
    let pilotNameInput = document.querySelector("input[name=pilotName]");
    let copilotNameInput = document.querySelector("input[name=copilotName]");
    let fuelLevelInput = document.querySelector("input[name=fuelLevel]");
    let cargoWeightInput = document.querySelector("input[name=cargoWeight]");
+   
    //helper functions
    function validate(){
       let valid = true;
-      console.log(valid)
+      
       if (pilotNameInput.value === "" || copilotNameInput.value === "" || fuelLevelInput.value === "" || cargoWeightInput.value === "") {
          alert("All fields are required!");
          event.preventDefault();
          valid = false;
-         console.log("#1: " + valid);
-      } if (!isNaN(pilotNameInput.value)) {
+      } 
+      
+      if (!isNaN(pilotNameInput.value)) {
          alert("Pilot name can only contain letters!");
          event.preventDefault();
          valid = false;
          console.log("#2: " + valid);
-      } if (!isNaN(copilotNameInput.value)) {
+      } 
+      
+      if (!isNaN(copilotNameInput.value)) {
          alert("Copilot name can only contain letters!")
          event.preventDefault();
          valid = false;
          console.log("#3: " + valid);
-      } if (isNaN(fuelLevelInput.value)) {
+      } 
+      
+      if (isNaN(fuelLevelInput.value)) {
          alert("Fuel Level can only contain numbers!")
          event.preventDefault();
          valid = false;
          console.log("#4: " + valid);
-      } if (isNaN(cargoWeightInput.value)) {
+      }
+      
+      if (isNaN(cargoWeightInput.value)) {
          alert("Cargo Weight can only contain numbers!")
          event.preventDefault();
          valid = false;
@@ -52,17 +61,45 @@ window.addEventListener("load", function() {
       }
       return valid;
    }
-   form.addEventListener("submit", function(event) {
-      console.log("test123"); //it is hitting this line before validate function??
-      //console prints "test123" then "true" when alerts are thrown. why???
 
-      if (validate()){
-         console.log('validate test');
-         //if it returns true then change css element to true
+
+   form.addEventListener("submit", function(event) {
+      let accessPilotStatus = document.getElementById("pilotStatus")
+      accessPilotStatus.innerHTML = ` ${pilotNameInput.value} Ready`;
+
+      let accesCopilotStatus = document.getElementById("copilotStatus")
+      accesCopilotStatus.innerHTML =`${copilotNameInput.value} Ready`;
+      // if (validate()){
+      //    console.log('validate test');
+      //    let faultyItems = document.querySelector("#faultyItems");
+      //    faultyItems.style.visibility = "visible";
+      //    event.preventDefault();
+      // }
+
+      if (fuelLevelInput.value < 10000) {
+         let currentFuelStatus = document.getElementById("fuelStatus");
+         currentFuelStatus.innerHTML = `Not enough fuel for the journey!`;
+         let currentLaunchStatus = document.getElementById("launchStatus");
+         currentLaunchStatus.innerHTML = `Shuttle not ready for launch`;
+         document.querySelector("h2").style.color = "red";
          let faultyItems = document.querySelector("#faultyItems");
-         faultyItems.visibility = "visible";
+         faultyItems.style.visibility = "visible";
+         event.preventDefault();
+      } else if (cargoWeightInput.value > 10000) {
+         let currentCargoStatus = document.getElementById("cargoStatus");
+         currentCargoStatus.innerHTML = `There is too much mass for the shuttle to take off.`;
+         let currentLaunchStatus = document.getElementById("launchStatus");
+         currentLaunchStatus.innerHTML = `Shuttle not ready for launch`;
+         document.querySelector("h2").style.color = "red";
+         let faultyItems = document.querySelector("#faultyItems");
+         faultyItems.style.visibility = "visible";
+         event.preventDefault();
+      } else {
+         document.querySelector("h2").style.color = "green";
+         let currentLaunchStatus = document.getElementById("launchStatus");
+         currentLaunchStatus.innerHTML = "Shuttle is ready for launch"
+         event.preventDefault();
       }
-      let pilotStatus = document.getElementById("pilotStatus").innerHTML = ` ${pilotNameInput} Ready`;
-      let copilotStatus = document.getElementById("copilotStatus").innerHTML = `${copilotNameInput} Ready`;
+      
    });
 });
