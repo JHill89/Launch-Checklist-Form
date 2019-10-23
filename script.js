@@ -1,6 +1,27 @@
 // Write your JavaScript code here!
+function init(){
+   fetch("https://handlers.education.launchcode.org/static/planets.json").then(function(response){
+      response.json().then(function(json){
+         // console.log(json[0]);
+         const div = document.getElementById("missionTarget");
 
-/* This block of code shows how to format the HTML once you fetch some planetary JSON!
+         div.innerHTML = `
+         <h2>Mission Destination</h2>
+         <ol>
+            <li>Name: ${json[0].name}</li>
+            <li>Diameter: ${json[0].diameter}</li>
+            <li>Star: ${json[0].star}</li>
+            <li>Distance from Earth: ${json[0].distance}</li>
+            <li>Number of Moons: ${json[0].moons}</li>
+         </ol>
+         <img src="${"https://www.nasa.gov/sites/default/files/images/587837main_Kepler16_transit_art2_full.jpg"}">`
+      });
+   });
+}
+
+window.onload = init;
+
+  /* This block of code shows how to format the HTML once you fetch some planetary JSON!
 <h2>Mission Destination</h2>
 <ol>
    <li>Name: ${}</li>
@@ -9,11 +30,10 @@
    <li>Distance from Earth: ${}</li>
    <li>Number of Moons: ${}</li>
 </ol>
-<img src="${}">
-*/
+  <img src="${}"></img>  */
 
 window.addEventListener("load", function() {
-   // console.log("Test");
+   console.log("Test");
    let form = document.querySelector("form");
 
    // variables
@@ -65,10 +85,16 @@ window.addEventListener("load", function() {
 
    form.addEventListener("submit", function(event) {
       let accessPilotStatus = document.getElementById("pilotStatus")
-      accessPilotStatus.innerHTML = ` ${pilotNameInput.value} Ready`;
-
+      accessPilotStatus.innerHTML = ` Pilot ${pilotNameInput.value} Ready`;
       let accesCopilotStatus = document.getElementById("copilotStatus")
-      accesCopilotStatus.innerHTML =`${copilotNameInput.value} Ready`;
+      accesCopilotStatus.innerHTML =`Co-pilot ${copilotNameInput.value} Ready`;
+
+      //variables:
+      let currentFuelStatus = document.getElementById("fuelStatus");
+      let currentLaunchStatus = document.getElementById("launchStatus");
+      let faultyItems = document.querySelector("#faultyItems");
+      let currentCargoStatus = document.getElementById("cargoStatus");
+
       // if (validate()){
       //    console.log('validate test');
       //    let faultyItems = document.querySelector("#faultyItems");
@@ -77,26 +103,21 @@ window.addEventListener("load", function() {
       // }
 
       if (fuelLevelInput.value < 10000) {
-         let currentFuelStatus = document.getElementById("fuelStatus");
          currentFuelStatus.innerHTML = `Not enough fuel for the journey!`;
-         let currentLaunchStatus = document.getElementById("launchStatus");
          currentLaunchStatus.innerHTML = `Shuttle not ready for launch`;
-         document.querySelector("h2").style.color = "red";
-         let faultyItems = document.querySelector("#faultyItems");
+         currentLaunchStatus.style.color = "red";
          faultyItems.style.visibility = "visible";
          event.preventDefault();
+
       } else if (cargoWeightInput.value > 10000) {
-         let currentCargoStatus = document.getElementById("cargoStatus");
          currentCargoStatus.innerHTML = `There is too much mass for the shuttle to take off.`;
-         let currentLaunchStatus = document.getElementById("launchStatus");
          currentLaunchStatus.innerHTML = `Shuttle not ready for launch`;
          document.querySelector("h2").style.color = "red";
-         let faultyItems = document.querySelector("#faultyItems");
          faultyItems.style.visibility = "visible";
          event.preventDefault();
+
       } else {
          document.querySelector("h2").style.color = "green";
-         let currentLaunchStatus = document.getElementById("launchStatus");
          currentLaunchStatus.innerHTML = "Shuttle is ready for launch"
          event.preventDefault();
       }
